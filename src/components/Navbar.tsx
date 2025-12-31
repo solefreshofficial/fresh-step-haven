@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import logo from "@/assets/solefresh-logo.png";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -24,9 +25,8 @@ const Navbar = () => {
       <div className="container-wide">
         <div className="flex items-center justify-between h-16 md:h-20 px-6 md:px-12 lg:px-24">
           {/* Logo */}
-          <a href="#" className="text-xl md:text-2xl font-bold">
-            <span className="text-foreground">SOLE</span>
-            <span className="text-gradient">FRESH</span>
+          <a href="#" className="flex items-center">
+            <img src={logo} alt="SoleFresh" className="h-10 md:h-12 w-auto" />
           </a>
 
           {/* Navigation */}
