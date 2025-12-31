@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import logo from "@/assets/solefresh-logo.png";
 
 const Footer = () => {
   return (
@@ -12,10 +13,7 @@ const Footer = () => {
             viewport={{ once: true }}
             className="text-center md:text-left"
           >
-            <h3 className="text-3xl font-bold mb-2">
-              <span className="text-foreground">SOLE</span>
-              <span className="text-gradient">FRESH</span>
-            </h3>
+            <img src={logo} alt="SoleFresh" className="h-12 w-auto mb-2" />
             <p className="text-muted-foreground">Fresh shoes. Every day.</p>
           </motion.div>
 
