@@ -36,7 +36,7 @@ const UseCases = () => {
 
   return (
     <section ref={ref} id="use-cases" className="section-padding relative overflow-hidden bg-card">
-      {/* Background pattern */}
+      {/* Background pattern - pure CSS */}
       <div className="absolute inset-0 opacity-5">
         <div
           className="absolute inset-0"
@@ -47,28 +47,20 @@ const UseCases = () => {
         />
       </div>
 
-      {/* Animated gradient orb */}
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-10"
+      {/* Animated gradient orb - CSS animation */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-10 animate-pulse-slow will-change-transform"
         style={{
           background:
             "radial-gradient(circle, hsl(142 71% 45%) 0%, transparent 50%)",
-        }}
-        animate={{
-          scale: [1, 1.2, 1],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
         }}
       />
 
       <div className="container-wide relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
           className="text-center mb-20"
         >
           <span className="inline-block text-primary text-xs font-semibold uppercase tracking-[0.3em] mb-6 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
@@ -88,46 +80,36 @@ const UseCases = () => {
           {useCases.map((useCase, index) => (
             <motion.div
               key={useCase.title}
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
+              transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
               className="group"
             >
-              <motion.div
-                className="glass-card-hover rounded-3xl p-8 h-full text-center relative overflow-hidden"
-                whileHover={{ y: -10, scale: 1.02 }}
-                transition={{ duration: 0.3 }}
+              <div
+                className="glass-card-hover rounded-3xl p-8 h-full text-center relative overflow-hidden transform-gpu transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02]"
               >
-                {/* Hover background */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent"
-                  initial={{ opacity: 0 }}
-                  animate={hoveredIndex === index ? { opacity: 1 } : { opacity: 0 }}
-                  transition={{ duration: 0.3 }}
+                {/* Hover background - CSS transition */}
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent transition-opacity duration-300 ${
+                    hoveredIndex === index ? "opacity-100" : "opacity-0"
+                  }`}
                 />
 
-                {/* Emoji with animation */}
-                <motion.div
-                  className="text-5xl mb-6"
-                  animate={
-                    hoveredIndex === index
-                      ? { scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] }
-                      : { scale: 1 }
-                  }
-                  transition={{ duration: 0.5 }}
+                {/* Emoji with CSS animation */}
+                <div
+                  className={`text-5xl mb-6 transform-gpu transition-transform duration-300 ${
+                    hoveredIndex === index ? "scale-125 rotate-6" : "scale-100"
+                  }`}
                 >
                   {useCase.image}
-                </motion.div>
+                </div>
 
                 {/* Icon */}
-                <motion.div
-                  className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6 relative z-10"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                >
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6 relative z-10 transform-gpu transition-transform duration-300 group-hover:scale-110">
                   <useCase.icon className="w-8 h-8 text-primary" />
-                </motion.div>
+                </div>
 
                 <h3 className="text-xl md:text-2xl font-bold mb-3 text-foreground relative z-10">
                   {useCase.title}
@@ -136,14 +118,13 @@ const UseCases = () => {
                   {useCase.description}
                 </p>
 
-                {/* Bottom line */}
-                <motion.div
-                  className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent"
-                  initial={{ scaleX: 0 }}
-                  animate={hoveredIndex === index ? { scaleX: 1 } : { scaleX: 0 }}
-                  transition={{ duration: 0.3 }}
+                {/* Bottom line - CSS transition */}
+                <div
+                  className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent transform-gpu transition-transform duration-300 origin-center ${
+                    hoveredIndex === index ? "scale-x-100" : "scale-x-0"
+                  }`}
                 />
-              </motion.div>
+              </div>
             </motion.div>
           ))}
         </div>

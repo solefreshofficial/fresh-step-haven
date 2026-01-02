@@ -8,7 +8,6 @@ const ingredients = [
     description:
       "High adsorption capacity traps odor-causing gases and volatile compounds.",
     color: "from-zinc-600 to-zinc-900",
-    icon: "◆",
     percentage: "40%",
   },
   {
@@ -17,7 +16,6 @@ const ingredients = [
     description:
       "Absorbs excess moisture, reducing humidity that promotes bacterial growth.",
     color: "from-sky-400/50 to-sky-600/50",
-    icon: "◇",
     percentage: "35%",
   },
   {
@@ -26,7 +24,6 @@ const ingredients = [
     description:
       "Provides mild, natural freshness without overpowering artificial scents.",
     color: "from-amber-400/50 to-amber-600/50",
-    icon: "○",
     percentage: "25%",
   },
 ];
@@ -45,23 +42,18 @@ const Ingredients = () => {
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-card via-background to-card" />
 
-      {/* Decorative circles */}
-      <motion.div
-        className="absolute top-20 right-20 w-64 h-64 rounded-full border border-primary/10"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-      />
-      <motion.div
-        className="absolute bottom-20 left-20 w-96 h-96 rounded-full border border-primary/5"
-        animate={{ rotate: -360 }}
-        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+      {/* Decorative circles - CSS animation for performance */}
+      <div className="absolute top-20 right-20 w-64 h-64 rounded-full border border-primary/10 animate-spin-slow will-change-transform" />
+      <div 
+        className="absolute bottom-20 left-20 w-96 h-96 rounded-full border border-primary/5 animate-spin-slow will-change-transform"
+        style={{ animationDirection: "reverse", animationDuration: "40s" }}
       />
 
       <div className="container-wide relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
           className="text-center mb-20"
         >
           <span className="inline-block text-primary text-xs font-semibold uppercase tracking-[0.3em] mb-6 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
@@ -77,53 +69,43 @@ const Ingredients = () => {
           </p>
         </motion.div>
 
-        {/* Ingredients cards */}
+        {/* Ingredients cards with optimized animations */}
         <div className="grid md:grid-cols-3 gap-8 lg:gap-10">
           {ingredients.map((ingredient, index) => (
             <motion.div
               key={ingredient.name}
-              initial={{ opacity: 0, y: 60 }}
+              initial={{ opacity: 0, y: 50 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
+              transition={{ duration: 0.5, delay: index * 0.15, ease: "easeOut" }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
               className="group relative"
             >
-              <motion.div
-                className="glass-card rounded-3xl p-10 h-full overflow-hidden relative"
-                whileHover={{ y: -12, scale: 1.02 }}
-                transition={{ duration: 0.4 }}
+              <div
+                className="glass-card rounded-3xl p-10 h-full overflow-hidden relative transform-gpu transition-all duration-300 hover:-translate-y-3 hover:scale-[1.02]"
               >
-                {/* Animated gradient background */}
-                <motion.div
-                  className={`absolute inset-0 bg-gradient-to-br ${ingredient.color} opacity-0 transition-opacity duration-700`}
-                  animate={hoveredIndex === index ? { opacity: 0.3 } : { opacity: 0 }}
+                {/* Animated gradient background - CSS transition */}
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${ingredient.color} transition-opacity duration-500 ${
+                    hoveredIndex === index ? "opacity-30" : "opacity-0"
+                  }`}
                 />
 
                 {/* Percentage ring */}
                 <div className="relative mb-8">
-                  <motion.div
-                    className="w-24 h-24 rounded-full border-4 border-muted flex items-center justify-center mx-auto relative"
-                    whileHover={{ scale: 1.1 }}
-                  >
-                    <motion.div
-                      className="absolute inset-0 rounded-full border-4 border-primary"
-                      initial={{ pathLength: 0 }}
-                      animate={
-                        isInView
-                          ? {
-                              clipPath: `polygon(0 0, 100% 0, 100% ${
-                                parseInt(ingredient.percentage) + 10
-                              }%, 0 ${parseInt(ingredient.percentage) + 10}%)`,
-                            }
-                          : {}
-                      }
-                      transition={{ duration: 1, delay: 0.5 + index * 0.2 }}
+                  <div className="w-24 h-24 rounded-full border-4 border-muted flex items-center justify-center mx-auto relative transform-gpu transition-transform duration-300 group-hover:scale-110">
+                    <div
+                      className="absolute inset-0 rounded-full border-4 border-primary transition-all duration-700"
+                      style={{
+                        clipPath: isInView
+                          ? `polygon(0 0, 100% 0, 100% ${parseInt(ingredient.percentage) + 10}%, 0 ${parseInt(ingredient.percentage) + 10}%)`
+                          : "polygon(0 0, 100% 0, 100% 0%, 0 0%)",
+                      }}
                     />
                     <span className="text-2xl font-bold text-gradient">
                       {ingredient.percentage}
                     </span>
-                  </motion.div>
+                  </div>
                 </div>
 
                 <div className="relative z-10 text-center">
@@ -138,23 +120,22 @@ const Ingredients = () => {
                   </p>
                 </div>
 
-                {/* Hover indicator */}
-                <motion.div
-                  className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent"
-                  initial={{ scaleX: 0 }}
-                  animate={hoveredIndex === index ? { scaleX: 1 } : { scaleX: 0 }}
-                  transition={{ duration: 0.3 }}
+                {/* Hover indicator - CSS transition */}
+                <div
+                  className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent transform-gpu transition-transform duration-300 origin-center ${
+                    hoveredIndex === index ? "scale-x-100" : "scale-x-0"
+                  }`}
                 />
-              </motion.div>
+              </div>
             </motion.div>
           ))}
         </div>
 
         {/* Fabric note */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 1 }}
+          transition={{ duration: 0.5, delay: 0.8, ease: "easeOut" }}
           className="mt-16 text-center"
         >
           <div className="inline-flex items-center gap-4 px-8 py-4 rounded-full bg-card/50 border border-border/50 backdrop-blur-sm">

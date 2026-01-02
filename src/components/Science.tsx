@@ -55,31 +55,22 @@ const Science = () => {
       id="science"
       className="section-padding relative overflow-hidden"
     >
-      {/* Animated background */}
+      {/* Animated background - GPU optimized */}
       <motion.div
         style={{ y: backgroundY }}
-        className="absolute inset-0 bg-gradient-to-b from-card via-background to-card"
+        className="absolute inset-0 bg-gradient-to-b from-card via-background to-card will-change-transform"
       />
 
-      {/* Morphing blob */}
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] opacity-10"
+      {/* Morphing blob - CSS animation for performance */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] opacity-10 animate-spin-slow will-change-transform"
         style={{
           background:
             "radial-gradient(circle, hsl(142 71% 45%) 0%, transparent 60%)",
         }}
-        animate={{
-          scale: [1, 1.2, 1],
-          rotate: [0, 180, 360],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear",
-        }}
       />
 
-      {/* Grid pattern */}
+      {/* Grid pattern - pure CSS */}
       <div
         className="absolute inset-0 opacity-[0.02]"
         style={{
@@ -91,28 +82,23 @@ const Science = () => {
       <div ref={ref} className="container-wide relative z-10">
         {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
           className="text-center mb-20"
         >
-          <motion.span
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.5 }}
-            className="inline-block text-primary text-xs font-semibold uppercase tracking-[0.3em] mb-6 px-4 py-2 rounded-full bg-primary/10 border border-primary/20"
-          >
+          <span className="inline-block text-primary text-xs font-semibold uppercase tracking-[0.3em] mb-6 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
             The Science
-          </motion.span>
+          </span>
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 tracking-tight">
             How It{" "}
             <span className="text-gradient relative">
               Works
               <motion.span
-                className="absolute -bottom-2 left-0 right-0 h-1 bg-primary/50 rounded-full"
+                className="absolute -bottom-2 left-0 right-0 h-1 bg-primary/50 rounded-full origin-left"
                 initial={{ scaleX: 0 }}
                 animate={isInView ? { scaleX: 1 } : {}}
-                transition={{ duration: 0.8, delay: 0.5 }}
+                transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
               />
             </span>
           </h2>
@@ -122,55 +108,47 @@ const Science = () => {
           </p>
         </motion.div>
 
-        {/* Features grid - Interactive cards */}
+        {/* Features grid - Interactive cards with optimized hover */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
               className="group relative"
             >
-              <motion.div
-                className="glass-card-hover rounded-3xl p-8 h-full relative overflow-hidden"
-                whileHover={{ y: -8, scale: 1.02 }}
-                transition={{ duration: 0.3 }}
+              <div
+                className="glass-card-hover rounded-3xl p-8 h-full relative overflow-hidden transform-gpu transition-transform duration-300 hover:-translate-y-2 hover:scale-[1.02]"
               >
-                {/* Hover glow effect */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                {/* Hover glow effect - CSS transition */}
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent transition-opacity duration-300 ${
+                    hoveredIndex === index ? "opacity-100" : "opacity-0"
+                  }`}
                 />
 
                 {/* Icon container */}
-                <motion.div
-                  className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-6 overflow-hidden"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                >
+                <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-6 overflow-hidden transform-gpu transition-transform duration-300 group-hover:scale-110">
                   <feature.icon className="w-8 h-8 text-primary relative z-10" />
-                  <motion.div
-                    className="absolute inset-0 bg-primary/30"
-                    initial={{ y: "100%" }}
-                    animate={hoveredIndex === index ? { y: 0 } : { y: "100%" }}
-                    transition={{ duration: 0.3 }}
+                  <div
+                    className={`absolute inset-0 bg-primary/30 transform-gpu transition-transform duration-300 ${
+                      hoveredIndex === index ? "translate-y-0" : "translate-y-full"
+                    }`}
                   />
-                </motion.div>
+                </div>
 
                 {/* Stat */}
                 <div className="mb-4">
-                  <motion.span
-                    className="text-4xl md:text-5xl font-bold text-gradient"
-                    animate={
-                      hoveredIndex === index
-                        ? { scale: [1, 1.1, 1] }
-                        : { scale: 1 }
-                    }
-                    transition={{ duration: 0.3 }}
+                  <span
+                    className={`text-4xl md:text-5xl font-bold text-gradient transform-gpu transition-transform duration-300 inline-block ${
+                      hoveredIndex === index ? "scale-110" : "scale-100"
+                    }`}
                   >
                     {feature.stat}
-                  </motion.span>
+                  </span>
                   <span className="block text-xs text-muted-foreground uppercase tracking-wider mt-1">
                     {feature.statLabel}
                   </span>
@@ -183,14 +161,13 @@ const Science = () => {
                   {feature.description}
                 </p>
 
-                {/* Bottom accent line */}
-                <motion.div
-                  className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent"
-                  initial={{ scaleX: 0 }}
-                  animate={hoveredIndex === index ? { scaleX: 1 } : { scaleX: 0 }}
-                  transition={{ duration: 0.3 }}
+                {/* Bottom accent line - CSS transition */}
+                <div
+                  className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent transform-gpu transition-transform duration-300 origin-center ${
+                    hoveredIndex === index ? "scale-x-100" : "scale-x-0"
+                  }`}
                 />
-              </motion.div>
+              </div>
             </motion.div>
           ))}
         </div>
