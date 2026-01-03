@@ -322,4 +322,49 @@
       transition-duration: 0.01ms !important;
     }
   }
+
+  /* Mobile optimizations - touch devices */
+  @media (pointer: coarse), (hover: none) {
+    .touch-show {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    
+    .hover-only {
+      display: none !important;
+    }
+    
+    /* Show all card details by default on mobile */
+    .mobile-visible {
+      opacity: 1 !important;
+      visibility: visible !important;
+      transform: translateY(0) !important;
+    }
+    
+    /* Reduce heavy animations on mobile */
+    .animate-float {
+      animation: float 8s ease-in-out infinite;
+    }
+    
+    .animate-pulse-glow {
+      animation: none;
+      box-shadow: 0 0 30px hsl(142 71% 45% / 0.2);
+    }
+
+    /* Simpler glow on mobile */
+    .glow-intense {
+      box-shadow: 0 0 40px hsl(142 71% 45% / 0.3);
+    }
+  }
+
+  /* Desktop hover enhancements */
+  @media (hover: hover) and (pointer: fine) {
+    .hover-scale:hover {
+      transform: scale(1.05);
+    }
+    
+    .hover-glow:hover {
+      box-shadow: 0 0 40px hsl(142 71% 45% / 0.3);
+    }
+  }
 }
